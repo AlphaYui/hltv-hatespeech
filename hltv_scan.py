@@ -175,6 +175,9 @@ forums += [Forum("Hardware", "16/hardware-tweaks")]
 
 for forum in forums:
     forum.insert(mysql)
+
+# By default, the forums are scraped every 15min
+mysql.query("INSERT INTO Signals (SignalName, Value) VALUES ('Refresh', 15) ON DUPLICATE KEY UPDATE SignalName='Refresh';")
 mysql.db.commit()
 
 # Starts a new HTML-session
@@ -246,53 +249,3 @@ while not getEndSignal(mysql):
     # Waits until the next refresh cycle should start or an end signal is received
     while datetime.now() < nextUpdateTime and not getEndSignal(mysql):
         time.sleep(5.0)
-
-
-
-
-# # Gets a list of all current threads on the offtopic page
-# threads = getForumThreads(session)
-
-# threadNum = 1
-# threadCount = len(threads)
-
-# # Retrieves the content of each thread
-# for thread in threads:
-#     # Loads the entire thread info, including all posts
-#     loadThreadContent(session, thread)
-
-#     # Adds the thread author to the database, or updates them if they already exist
-#     thread.author.insert(mysql)
-
-#     # Inserts the thread into the database, or updates it if it already exists
-#     thread.insert(mysql)
-
-#     # Iterates over all posts and finds top post to get the timestamp
-#     # Then adds the thread to the database
-#     for post in thread.posts:
-
-#         if post.replyNum == 0:
-#             thread.timestamp = post.timestamp
-#             thread.insert(mysql)
-#             break
-
-#     # Iterates over the posts a second time and adds the posts with the linked thread SQL ID
-#     for post in thread.posts:
-#         # Adds post and author to the database, or ignores it if it already exists
-#         post.threadID = thread.sqlID
-#         post.author.insert(mysql)
-#         post.insert(mysql)
-
-#     print(f"Thread {threadNum}/{threadCount} ({len(thread.posts)} posts)")
-#     threadNum += 1
-
-#     time.sleep(2.0 + random.random())
-
-# # Commits changes to the database
-# mysql.db.commit()
-
-# print(f"Total data usage: {byteCount / 1e+6} MB")
-
-# # TODO: 
-
-# TODO: SAVE THREAD TITLE TO DATABASE
