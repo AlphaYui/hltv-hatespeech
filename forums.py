@@ -20,7 +20,7 @@ def initializeTables(mysql: MySQLWrapper, overwrite: bool = False):
     # OffRating- A confidence score between 0.0 and 1.0, indicating how likely this post contains offensive language
     mysql.createTable("Posts", (
         "PostID INT AUTO_INCREMENT, "
-        "HLTVID VARCHAR(127) NOT NULL, "
+        "HLTVID VARCHAR(511) NOT NULL, "
         "ThreadID INT NOT NULL, "
         "AuthorID INT NOT NULL, "
         "ReplyNum INT NOT NULL, "
@@ -39,8 +39,8 @@ def initializeTables(mysql: MySQLWrapper, overwrite: bool = False):
     # Name - Forum name of the author
     mysql.createTable("Authors", (
         "AuthorID INT AUTO_INCREMENT, "
-        "HLTVID VARCHAR(63) NOT NULL, "
-        "Name VARCHAR(63) NOT NULL, "
+        "HLTVID VARCHAR(127) NOT NULL, "
+        "Name VARCHAR(127) NOT NULL, "
         "PRIMARY KEY(AuthorID), "
         "UNIQUE (HLTVID)"
     ), 
@@ -55,10 +55,10 @@ def initializeTables(mysql: MySQLWrapper, overwrite: bool = False):
     # Time - The time at which the thread was created
     mysql.createTable("Threads", (
         "ThreadID INT AUTO_INCREMENT, "
-        "HLTVID VARCHAR(63) NOT NULL, "
+        "HLTVID VARCHAR(511) NOT NULL, "
         "ForumID INT NOT NULL, "
         "AuthorID INT NOT NULL, "
-        "Title VARCHAR(127) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, "
+        "Title VARCHAR(511) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL, "
         "NumResponses INT DEFAULT 0, "
         "Time DATETIME DEFAULT NOW(), "
         "PRIMARY KEY(ThreadID), "
